@@ -12,7 +12,21 @@
 
 ---
 
-![Aperçu](./docs/preview.png)
+## 📸 Aperçu de l'Application
+
+<div align="center">
+  <img src="./docs/preview.png" alt="Tableau de bord - Fleet Commander" width="100%" />
+</div>
+
+<br/>
+
+| 🚀 Page d'Accueil (Landing) | 🔐 Connexion & Passe-partout |
+| :---: | :---: |
+| <img src="./docs/landing.png" alt="Page d'accueil" width="100%" /> | <img src="./docs/login.png" alt="Page de connexion" width="100%" /> |
+
+| 📊 Tableau de Bord (Analytique) | 📝 Inscription Express |
+| :---: | :---: |
+| <img src="./docs/dashboard.png" alt="Dashboard" width="100%" /> | <img src="./docs/register.png" alt="Inscription" width="100%" /> |
 
 ---
 
