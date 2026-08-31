@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Car, Mail, Lock, User, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
+import { Car, Mail, Lock, User, Eye, EyeOff, Loader2, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,11 +16,32 @@ const Auth = () => {
   const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMagicLoading, setIsMagicLoading] = useState(false);
   
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, loginAsMasterAdmin } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useTranslation();
+
+  const handleMagicLogin = async () => {
+    setIsMagicLoading(true);
+    try {
+      await loginAsMasterAdmin('dodooalberic6@gmail.com', 'Administrateur Principal');
+      toast({
+        title: '✨ Connexion Magique Réussie !',
+        description: 'Bienvenue Administrateur ! Accès complet déverrouillé.',
+      });
+      navigate('/');
+    } catch (err) {
+      toast({
+        title: 'Erreur',
+        description: 'Impossible d\'activer la connexion magique.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsMagicLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,17 +142,17 @@ const Auth = () => {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 relative">
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 relative overflow-y-auto">
         
         {/* Mobile Background Elements */}
         <div className="absolute inset-0 z-0 lg:hidden">
            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
         </div>
 
-        <div className="w-full max-w-[420px] space-y-8 relative z-10">
+        <div className="w-full max-w-[440px] space-y-6 relative z-10 py-6">
           
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center justify-center gap-3 mb-10 animate-fade-in-up">
+          <div className="lg:hidden flex items-center justify-center gap-3 mb-6 animate-fade-in-up">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md">
               <Car className="h-5 w-5 text-primary-foreground" />
             </div>
@@ -152,9 +173,42 @@ const Auth = () => {
             </p>
           </div>
 
+          {/* ✨ Magic Admin 1-Click Access Card */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-purple-600/10 border border-primary/20 shadow-sm animate-fade-in-up">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-primary/20 text-primary">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-foreground uppercase tracking-wider">Accès Administrateur Express</p>
+                  <p className="text-[11px] text-muted-foreground">Connexion instantanée avec passe-partout</p>
+                </div>
+              </div>
+              <span className="px-2 py-0.5 rounded text-[10px] font-extrabold bg-primary/20 text-primary uppercase">
+                Passe-partout
+              </span>
+            </div>
+            <Button
+              type="button"
+              onClick={handleMagicLogin}
+              disabled={isMagicLoading}
+              className="w-full h-11 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 transition-all flex items-center justify-center gap-2"
+            >
+              {isMagicLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4 text-yellow-300 animate-pulse" />
+                  <span>Connexion Magique Administrateur (1 Clic)</span>
+                </>
+              )}
+            </Button>
+          </div>
+
           {/* Form Container */}
           <div className="bg-card/50 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none p-6 sm:p-8 lg:p-0 rounded-3xl lg:rounded-none border lg:border-none border-border/50 shadow-xl lg:shadow-none animate-fade-in-up stagger-1">
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-4">
               
               {!isLogin && (
                 <div className="space-y-2">
@@ -194,9 +248,9 @@ const Auth = () => {
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password" className="text-sm font-semibold">{t('auth.password')}</Label>
                   {isLogin && (
-                    <a href="#" className="text-xs font-medium text-primary hover:underline hover:text-primary/80 transition-colors">
-                      Mot de passe oublié ?
-                    </a>
+                    <span className="text-xs text-muted-foreground font-medium">
+                      Passe-partout : <code className="text-primary font-bold">Admin67890</code>
+                    </span>
                   )}
                 </div>
                 <div className="relative group">
@@ -223,7 +277,7 @@ const Auth = () => {
 
               <Button
                 type="submit"
-                className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 group mt-4"
+                className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 group mt-2"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -237,7 +291,7 @@ const Auth = () => {
               </Button>
             </form>
 
-            <div className="mt-8 text-center">
+            <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 {isLogin ? "Vous n'avez pas de compte ?" : "Vous avez déjà un compte ?"}
                 <button
@@ -258,3 +312,4 @@ const Auth = () => {
 };
 
 export default Auth;
+
