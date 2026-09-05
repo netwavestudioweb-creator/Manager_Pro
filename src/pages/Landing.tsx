@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Car, ShieldCheck, Map, Activity, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Landing = () => {
+  const { user } = useAuth();
   return (
     <div className="min-h-screen bg-background font-sans overflow-x-hidden selection:bg-primary/20">
       {/* Decorative Background Elements */}
@@ -25,14 +27,25 @@ const Landing = () => {
           </div>
           
           <div className="flex items-center gap-4">
-            <Link to="/auth" className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors hidden sm:block">
-              Se connecter
-            </Link>
-            <Link to="/auth">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 font-bold shadow-lg shadow-primary/25 transition-all hover:scale-105">
-                S'abonner
-              </Button>
-            </Link>
+            {user ? (
+              <Link to="/app">
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 font-bold shadow-lg shadow-primary/25 transition-all hover:scale-105 flex items-center gap-2">
+                  <span>Mon Espace</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/auth" className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors hidden sm:block">
+                  Se connecter
+                </Link>
+                <Link to="/auth">
+                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 font-bold shadow-lg shadow-primary/25 transition-all hover:scale-105">
+                    S'abonner
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -60,17 +73,28 @@ const Landing = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start pt-4">
-              <Link to="/auth">
-                <Button className="h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-lg shadow-xl shadow-primary/30 group transition-all hover:scale-105">
-                  S'abonner maintenant
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <Link to="/auth">
-                <Button variant="outline" className="h-14 px-8 rounded-full font-bold text-lg border-border/50 hover:bg-muted/50 transition-all bg-transparent">
-                  Espace Client
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/app">
+                  <Button className="h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-lg shadow-xl shadow-primary/30 group transition-all hover:scale-105">
+                    Accéder à mon tableau de bord
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/auth">
+                    <Button className="h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-lg shadow-xl shadow-primary/30 group transition-all hover:scale-105">
+                      S'abonner maintenant
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                  <Link to="/auth">
+                    <Button variant="outline" className="h-14 px-8 rounded-full font-bold text-lg border-border/50 hover:bg-muted/50 transition-all bg-transparent">
+                      Espace Client
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
             
             <div className="flex items-center gap-6 justify-center lg:justify-start pt-6 text-sm font-medium text-muted-foreground">

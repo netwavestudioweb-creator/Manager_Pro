@@ -42,7 +42,9 @@ const App = () => {
               <BrowserRouter>
                 <Routes>
                   <Route path="/landing" element={<Landing />} />
+                  <Route path="/accueil" element={<Landing />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/login" element={<Auth />} />
                   <Route
                     path="/*"
                     element={
@@ -50,6 +52,7 @@ const App = () => {
                         <MainLayout>
                           <Routes>
                             <Route path="/" element={<Index />} />
+                            <Route path="/app" element={<Index />} />
                             <Route path="/vehicles" element={<Vehicles />} />
                             <Route path="/maintenance" element={<Maintenance />} />
                             <Route path="/breakdowns" element={<Breakdowns />} />

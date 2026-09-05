@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Car, Mail, Lock, User, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Car, Mail, Lock, User, Eye, EyeOff, Loader2, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,10 +17,16 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  const { signIn, signUp } = useAuth();
+  const { user, signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,10 +134,21 @@ const Auth = () => {
            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
         </div>
 
-        <div className="w-full max-w-[420px] space-y-8 relative z-10 py-6">
+        <div className="w-full max-w-[420px] space-y-6 relative z-10 py-6">
+          
+          {/* Back to Home Link */}
+          <div className="flex items-center justify-start animate-fade-in-up">
+            <Link
+              to="/landing"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-primary transition-all px-3 py-1.5 rounded-full bg-muted/40 hover:bg-muted border border-border/40 hover:border-primary/30"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span>Retour à l'accueil</span>
+            </Link>
+          </div>
           
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center justify-center gap-3 mb-8 animate-fade-in-up">
+          <div className="lg:hidden flex items-center justify-center gap-3 mb-6 animate-fade-in-up">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md">
               <Car className="h-5 w-5 text-primary-foreground" />
             </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell, Search, User, Moon, Sun, LogOut, Menu, RefreshCw, AlertTriangle } from 'lucide-react';
+import { Bell, Search, User, Moon, Sun, LogOut, Menu, RefreshCw, AlertTriangle, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -168,6 +168,10 @@ const Header = ({ sidebarCollapsed, setMobileMenuOpen }: HeaderProps) => {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>{t('header.myAccount')}</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer" onClick={() => navigate('/landing')}>
+                <Home className="mr-2 h-4 w-4" />
+                Page d'accueil
+              </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" onClick={() => navigate('/settings')}>
                 <User className="mr-2 h-4 w-4" />
                 {t('header.profile')}
